@@ -304,6 +304,8 @@ CLASS ZCL_ABAPGIT_REPO IMPLEMENTATION.
       ii_config  = get_data_config( )
       it_files   = get_files_remote( ) ).
 
+    " Update database
+    zcl_abapgit_data_factory=>get_deserializer( )->actualize( lt_result ).
     CLEAR: mt_local.
 
     update_last_deserialize( ).

@@ -54,7 +54,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_abapgit_object_wapa IMPLEMENTATION.
+CLASS ZCL_ABAPGIT_OBJECT_WAPA IMPLEMENTATION.
 
 
   METHOD create_new_application.
@@ -490,9 +490,13 @@ CLASS zcl_abapgit_object_wapa IMPLEMENTATION.
       REPLACE ALL OCCURRENCES OF '/' IN lv_extra WITH '_-'.
       REPLACE ALL OCCURRENCES OF '/' IN lv_ext WITH '_-'.
 
-      lt_remote_content = to_page_content( mo_files->read_raw( iv_extra = lv_extra
-                                                               iv_ext   = lv_ext ) ).
-      lt_local_content = to_page_content( get_page_content( lo_page ) ).
+      IF <ls_remote_page>-attributes-pagetype <> so2_controller.
+        lt_remote_content = to_page_content( zif_abapgit_object~mo_files->read_raw( iv_extra = lv_extra
+                                                                                    iv_ext   = lv_ext ) ).
+        lt_local_content = to_page_content( get_page_content( lo_page ) ).
+      ELSE.
+        CLEAR: lt_remote_content, lt_local_content.
+      ENDIF.
 
       IF ls_local_page = <ls_remote_page> AND lt_local_content = lt_remote_content.
         " no changes -> nothing to do
